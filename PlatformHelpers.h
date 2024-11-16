@@ -27,11 +27,11 @@ void setPixel(PlatformAgnosticPixel, uint16_t, ClusterNameEnum);
 void setBrightness(uint8_t);
 
 ////// SEEED feather sense
-// #define FlowFeatherSense "FlowFeatherSense"
-// #define CLUSTER_1_PIN 0
-// #define CLUSTER_2_PIN 3
-// #define CLUSTER_1_COUNT 2
-// #define CLUSTER_2_COUNT 6
+#define FlowFeatherSense "FlowFeatherSense"
+#define CLUSTER_1_PIN 3
+#define CLUSTER_2_PIN 0
+#define CLUSTER_1_COUNT 2
+#define CLUSTER_2_COUNT 6
 
 ////////Flow Baton Arduino Mini v 1
 // #define FlowArdinoMini "FlowArdinoMini"
@@ -42,11 +42,11 @@ void setBrightness(uint8_t);
 
 
 // ESP32 car strip
-#define PimpMyRide "PimpMyRide"
-#define CLUSTER_1_PIN 18     
-#define CLUSTER_2_PIN 5
-#define CLUSTER_1_COUNT 144
-#define CLUSTER_2_COUNT 0
+// #define PimpMyRide "PimpMyRide"
+// #define CLUSTER_1_PIN 18     
+// #define CLUSTER_2_PIN 5
+// #define CLUSTER_1_COUNT 144
+// #define CLUSTER_2_COUNT 0
 // Check if ESP32 is used and include FastLED if true
 
 #if defined(PimpMyRide) || defined(FlowArdinoMini)

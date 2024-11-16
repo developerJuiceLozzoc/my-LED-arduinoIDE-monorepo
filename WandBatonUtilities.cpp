@@ -1,4 +1,7 @@
 #include "WandBatonUtilities.h"
+#if defined(PimpMyRide) || defined(FlowArdinoMini)
+
+#endif
 
 
 

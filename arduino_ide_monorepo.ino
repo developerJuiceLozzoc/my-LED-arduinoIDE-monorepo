@@ -1,9 +1,6 @@
+#include "PlatformHelpers.h"
+#include "WandBatonUtilities.h"
 
-
-#define PIN 0          // Define the pin connected to your LED strip
-#define NUM_LEDS 144    // Define the number of LEDs in your strip
-
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_RGB + NEO_KHZ800); // Use NEO_RGB for WS2811
 
 inline int intFromState(WandBatonAnimationState state) {
     return static_cast<int>(state);
@@ -12,18 +9,20 @@ inline int intFromState(WandBatonAnimationState state) {
 inline void setNextState(WandBatonAnimationState *state) {
   const int currentState = intFromState(*state);
   const int totalState = 5;
-  fill_solid(ledCluster1, CLUSTER_1_COUNT, CRGB::Black);  
-  fill_solid(ledCluster2, CLUSTER_2_COUNT, CRGB::Black);  
-    FastLED.setBrightness(255);
-
-  FastLED.show();                        
+  PlatformAgnosticPixel black = PlatformAgnosticPixel(0, 0, 0);
+  for(int i=0; i < CLUSTER_1_COUNT; i ++) {
+		setPixel(black, i, ClusterNameEnum::largeCluster);
+	}
+	for(int i=0; i < CLUSTER_2_COUNT; i ++) {
+		setPixel(black, i, ClusterNameEnum::smallCluster);
+	}
+  Show();                        
   *state = static_cast<WandBatonAnimationState>((currentState + 1) % totalState);
 }
 
 
 void setup() {
-  strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
+ setupLEDs();
 }
 
 WandBatonAnimationState currentState = WandBatonAnimationState::None;
@@ -31,7 +30,7 @@ WandBatonAnimationState currentState = WandBatonAnimationState::None;
 void loop() {
   unsigned long currentMillis = millis(); 
   const int lengthOfAnimation = 8 * 1000; // 600 % millisoncs == 0 at 1 minute i think 4200 69
-  CRGB pixel;
+  PlatformAgnosticPixel pixel;
 
 
   if(
