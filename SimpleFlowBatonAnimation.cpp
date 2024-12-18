@@ -1,31 +1,67 @@
-#include "WandBatonUtilities.h"
-#if defined(PimpMyRide) || defined(FlowArdinoMini)
-
-#endif
+#include "FastLEDHelpers.h"
 
 
-
-void stateMachineForAnimationStateAndCurrentClicks(
-	WandBatonAnimationState* state,
-	uint32_t* clicks
-) {
-
+inline int intFromState(WandBatonAnimationState state) {
+    return static_cast<int>(state);
 }
 
-void inputReceivedIncrementState(
-	WandBatonAnimationState* state
-) {
-	
+inline void setNextState(WandBatonAnimationState *state) {
+  const int currentState = intFromState(*state);
+  const int totalState = 5;
+  PlatformAgnosticPixel black = PlatformAgnosticPixel(0, 0, 0);
+  for(int i=0; i < CLUSTER_1_COUNT; i ++) {
+		setPixel(black, i, ClusterNameEnum::largeCluster);
+	}
+	for(int i=0; i < CLUSTER_2_COUNT; i ++) {
+		setPixel(black, i, ClusterNameEnum::smallCluster);
+	}
+  Show();                        
+  *state = static_cast<WandBatonAnimationState>((currentState + 1) % totalState);
 }
 
-void animatePGS() {
+// Constructor to initialize the animals
+SimpleStateMachineFlowBaton::SimpleStateMachineFlowBaton() {
+	currentState == WandBatonAnimationState::None;
+}
+
+void SimpleStateMachineFlowBaton::simpleFlowBatonLoop() {
+  unsigned long currentMillis = millis(); 
+  const int lengthOfAnimation = 8 * 1000; // 600 % millisoncs == 0 at 1 minute i think 4200 69
+  PlatformAgnosticPixel pixel;
+
+
+  if(
+    (currentState == WandBatonAnimationState::None && currentMillis % 2000 == 0) ||
+    (currentState != WandBatonAnimationState::None && currentMillis % lengthOfAnimation == 0)
+   ) {
+    setNextState(&currentState);
+  }
+
+  switch(currentState) {
+    case WandBatonAnimationState::PinkAndGoldSexy:
+      animatePGS();
+      break;
+    case WandBatonAnimationState::PurpleGreenPingPong:
+      animatePGPP(currentMillis);
+      break;
+    case WandBatonAnimationState::RapidFlashSlowFade:
+      animatePGPP(currentMillis);
+      break;
+    case WandBatonAnimationState::SinColorPurple:
+      animateSCP(currentMillis);
+      break;
+      case WandBatonAnimationState::None:
+      break;  
+  }
+}
+
+void SimpleStateMachineFlowBaton::animatePGS() {
 	// Define deep pink and gold color values
 	PlatformAgnosticPixel deepPink = PlatformAgnosticPixel(255, 20, 147);
 	PlatformAgnosticPixel gold = PlatformAgnosticPixel(255, 215, 0);
 	setPixel(deepPink, 0, ClusterNameEnum::smallCluster);
-	setPixel(gold, 0, ClusterNameEnum::smallCluster);
-	setPixel(deepPink, 0, ClusterNameEnum::smallCluster);
-
+	setPixel(gold, 1, ClusterNameEnum::smallCluster);
+	///////////////////////////////////////////////
 	setPixel(deepPink, 0, ClusterNameEnum::largeCluster);
 	setPixel(gold, 1, ClusterNameEnum::largeCluster);
 	setPixel(deepPink, 2, ClusterNameEnum::largeCluster);
@@ -36,7 +72,7 @@ void animatePGS() {
 	Show();
 }
 
-void animatePGPP(long clicks) {
+void SimpleStateMachineFlowBaton::animatePGPP(long clicks) {
 	PlatformAgnosticPixel poisonGreen = PlatformAgnosticPixel(64, 255, 0);
 	PlatformAgnosticPixel deepPurple = PlatformAgnosticPixel(75, 0, 130);
 
@@ -58,7 +94,7 @@ void animatePGPP(long clicks) {
 	Show();
 }
 
-void animateSCP(long clicks) {
+void SimpleStateMachineFlowBaton::animateSCP(long clicks) {
 	PlatformAgnosticPixel purple1 = PlatformAgnosticPixel(128, 0, 128);
 	PlatformAgnosticPixel purple2 = PlatformAgnosticPixel(75, 0, 130);
 	uint8_t brightness = (sin(clicks * 0.003) + 1) * 127.5;
@@ -73,11 +109,7 @@ void animateSCP(long clicks) {
 	Show();
 }
 
-void animateRFSF(long clicks) {
-
-}
-
-void setPurpleColorForIndex(PlatformAgnosticPixel * color, int index){
+void SimpleStateMachineFlowBaton::setPurpleColorForIndex(PlatformAgnosticPixel * color, int index){
 	PlatformAgnosticPixel colors[] = {
 		// Purple shades
 		PlatformAgnosticPixel(128, 0, 128),   // Purple
@@ -87,7 +119,7 @@ void setPurpleColorForIndex(PlatformAgnosticPixel * color, int index){
 	*color = colors[index];
 }
 
-void setPinkColorForIndex(PlatformAgnosticPixel * color, int index){
+void SimpleStateMachineFlowBaton::setPinkColorForIndex(PlatformAgnosticPixel * color, int index){
 	PlatformAgnosticPixel colors[] = {
 		// Pink shades
 		PlatformAgnosticPixel(255, 182, 193), // LightPink
@@ -98,7 +130,7 @@ void setPinkColorForIndex(PlatformAgnosticPixel * color, int index){
 	*color = colors[index];
 }
 
-void setGoldColorForIndex(PlatformAgnosticPixel * color, int index){
+void SimpleStateMachineFlowBaton::setGoldColorForIndex(PlatformAgnosticPixel * color, int index){
   
 	PlatformAgnosticPixel colors[] = {
 		// Purple shades
@@ -109,7 +141,7 @@ void setGoldColorForIndex(PlatformAgnosticPixel * color, int index){
 	*color = colors[index];
 }
 
-void setGreenColorForIndex(PlatformAgnosticPixel * color, int index){
+void SimpleStateMachineFlowBaton::setGreenColorForIndex(PlatformAgnosticPixel * color, int index){
 	PlatformAgnosticPixel colors[] = {
 
 		// Green shades
