@@ -100,12 +100,12 @@ class RabbitTurtleChaseService {
 public:
     void updatePositions();
     RabbitTurtleChaseService();
-    void printTurtle();
-    void printRabbit();
     bool hasCaughtRabbit();
     void resetRace();
 
 private:
+    void printTurtle();
+    void printRabbit();
     void updateTurtlePosition(unsigned long time);
     void updateRabbitPosition(unsigned long time);
     double turtleVelocity;

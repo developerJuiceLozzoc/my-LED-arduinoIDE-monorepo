@@ -54,6 +54,8 @@ void RabbitTurtleChaseService::updatePositions() {
     updateRabbitPosition(now);
     startTime = now;
     updateRabbitVelocity();
+    printRabbit();
+    printTurtle();
 }
 
 
@@ -111,8 +113,6 @@ void homeWindowStripLoop() {
      animator.resetRace();
   } else {
     animator.updatePositions();
-    animator.printRabbit();
-    animator.printTurtle();
   }
 
 

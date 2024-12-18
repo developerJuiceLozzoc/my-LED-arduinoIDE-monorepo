@@ -51,8 +51,6 @@ class RabbitTurtleChaseService {
 public:
     void updatePositions();
     RabbitTurtleChaseService();
-    void printTurtle();
-    void printRabbit();
     bool hasCaughtRabbit();
     void resetRace();
 
@@ -67,6 +65,8 @@ private:
     unsigned long startTime;
     void updateRabbitVelocity();
     unsigned long millisOffset;
+    void printTurtle();
+    void printRabbit();
 
 };
 
