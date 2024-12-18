@@ -45,9 +45,9 @@ void setBrightness(uint8_t);
 
 
 #define FastLEDEnabled "FastLEDEnabled"
-#define CLUSTER_1_PIN 3
+#define CLUSTER_1_PIN 18
 #define CLUSTER_2_PIN 5
-#define CLUSTER_1_COUNT 6
+#define CLUSTER_1_COUNT 150
 #define CLUSTER_2_COUNT 2
 
 #if defined(FastLEDEnabled)
@@ -60,6 +60,10 @@ void setBrightness(uint8_t);
 #endif
 
 
-#if defined(FastLEDEnabled)
-    #define COLOR_ORDER RGB 
-#endif
+// define your LED specific color orders which are per unit different
+
+//home window shitty ws2812b
+#define COLOR_ORDER GRB
+
+//ws2811 baton lights
+//#define COLOR_ORDER RGB

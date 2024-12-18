@@ -1,11 +1,8 @@
 #include "FastLEDHelpers.h"
 
+
 // fileprivate function
 void printDots(int xDots, int here, PlatformAgnosticPixel color) {
-  const PlatformAgnosticPixel black = PlatformAgnosticPixel(0,0,0);
-  for(int i=0; i< CLUSTER_1_COUNT; i++) {
-      setPixel(black,i,ClusterNameEnum::largeCluster);
-  }
   for(uint8_t offset = 0; offset < xDots; offset++) {
       if(here - offset < 0) {
       setPixel(color, here - offset + CLUSTER_1_COUNT,ClusterNameEnum::largeCluster);
@@ -27,16 +24,18 @@ RabbitTurtleChaseService::RabbitTurtleChaseService() {
     millisOffset = 0;
 }
 
-void RabbitTurtleChaseService::printTurtle() {
- PlatformAgnosticPixel constructionOrange = PlatformAgnosticPixel(255,79,0);
-  const uint8_t dotCount = 3;
-  const PlatformAgnosticPixel black = PlatformAgnosticPixel(0,0,0);
-  printDots(dotCount, turtlePosition, constructionOrange);
-}
-void RabbitTurtleChaseService::printRabbit() {
+void RabbitTurtleChaseService::printPhase() {
+  PlatformAgnosticPixel constructionOrange = PlatformAgnosticPixel(255,79,0);
   const PlatformAgnosticPixel purpleRabbit = PlatformAgnosticPixel(128, 0, 128);
-  const uint8_t dotCount = 8;
-  printDots(dotCount, (int)rabbitPosition % CLUSTER_1_COUNT, purpleRabbit);
+  const uint8_t rabbitDotCount = 8;
+  const uint8_t turtleDotCount = 3;
+  const PlatformAgnosticPixel black = PlatformAgnosticPixel(0,0,0);
+
+  for(int i=0; i< CLUSTER_1_COUNT; i++) {
+      setPixel(black,i,ClusterNameEnum::largeCluster);
+  }
+  printDots(rabbitDotCount, (int)rabbitPosition % CLUSTER_1_COUNT, purpleRabbit);
+  printDots(turtleDotCount, turtlePosition, constructionOrange);
 }
 
 void RabbitTurtleChaseService::updateRabbitVelocity() {
@@ -54,10 +53,8 @@ void RabbitTurtleChaseService::updatePositions() {
     updateRabbitPosition(now);
     startTime = now;
     updateRabbitVelocity();
-    printRabbit();
-    printTurtle();
+    printPhase();
 }
-
 
 /*
 fixed velocity entire race.

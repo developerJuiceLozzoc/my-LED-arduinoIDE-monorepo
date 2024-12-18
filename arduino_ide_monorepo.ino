@@ -1,16 +1,16 @@
 #include "FastLEDHelpers.h"
 
 void setup() {
- Serial.begin(9600);
+//  Serial.begin(9600);
  setupLEDs();
 
 }
 
 void loop() {
     // Uncomment to implment home window
-    // homeWindowStripLoop();
+    homeWindowStripLoop();
 
-    static SimpleStateMachineFlowBaton animator = SimpleStateMachineFlowBaton();
-    animator.simpleFlowBatonLoop();
+    // static SimpleStateMachineFlowBaton animator = SimpleStateMachineFlowBaton();
+    // animator.simpleFlowBatonLoop();
 
 }

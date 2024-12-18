@@ -65,8 +65,7 @@ private:
     unsigned long startTime;
     void updateRabbitVelocity();
     unsigned long millisOffset;
-    void printTurtle();
-    void printRabbit();
+    void printPhase();
 
 };
 
